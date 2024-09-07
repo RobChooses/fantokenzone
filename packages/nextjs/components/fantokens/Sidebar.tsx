@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AssetType } from "./metadata";
 import RPC from "./viemRPC";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
@@ -127,7 +128,11 @@ const Sidebar: React.FC = () => {
               {Object.keys(assetDictionary).map(key => (
                 <div key={key}>
                   <ul className="space-y-2 border-t-white border">
-                    <li className="text-1xl p-2 hover:bg-gray-700 rounded">{assetDictionary[key].name}</li>
+                    <li className="text-1xl p-2 hover:bg-gray-700 rounded" key={key}>
+                      <Link href={`/team/${key}`}>
+                        <h3>{assetDictionary[key].name}</h3>
+                      </Link>
+                    </li>
                     <li className="text-1xl p-2 rounded">
                       {assetDictionary[key].balance} {assetDictionary[key].token}
                     </li>
