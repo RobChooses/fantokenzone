@@ -6,7 +6,7 @@ export interface AssetType {
   decimal: bigint;
 }
 
-const fanTokenMetadata = {
+export const fanTokenMetadata = {
   spicy: [
     {
       constractAddress: "0x44B190D30198F2E585De8974999a28f5c68C6E0F",
@@ -34,11 +34,38 @@ const fanTokenMetadata = {
     },
     {
       constractAddress: "0xb0Fa395a3386800658B9617F90e834E2CeC76Dd3",
-      name: "Paris Saint-Germain (PSG)",
+      name: "Paris Saint-Germain",
       token: "PSG",
+      decimal: 0n,
+    },
+    {
+      constractAddress: "0x8DBe49c4Dcde110616fafF53b39270E1c48F861a",
+      name: "Napoli",
+      token: "NAP",
+      decimal: 0n,
+    },
+    {
+      constractAddress: "0x945EeD98f5CBada87346028aD0BeE0eA66849A0e",
+      name: "Juventus",
+      token: "JUV",
+      decimal: 0n,
+    },
+    {
+      constractAddress: "0x641d040dB51398Ba3a4f2d7839532264EcdCc3aE",
+      name: "AC Milan",
+      token: "ACM",
       decimal: 0n,
     },
   ],
 };
 
-export default fanTokenMetadata;
+export const fanTokenMapping: { [key: string]: string } = {
+  ACM: "AC Milan",
+  AFC: "Arsenal",
+  BAR: "FC Barcelona",
+  CITY: "Manchester City",
+  JUV: "Juventus",
+  NAP: "Napoli",
+  PSG: "Paris Saint-Germain",
+  SPUR: "Tottenham Hotspur",
+};

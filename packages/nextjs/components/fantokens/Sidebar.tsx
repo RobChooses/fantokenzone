@@ -5,7 +5,7 @@ import RPC from "./viemRPC";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
-import { GrRefresh } from "react-icons/gr";
+import { TbPlayFootball } from "react-icons/tb";
 import { useAccount } from "wagmi";
 
 const clientId = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || "";
@@ -94,7 +94,9 @@ const Sidebar: React.FC = () => {
   const openView = (
     <>
       <button onClick={getFanTokenBalances} className="text-white">
-        <GrRefresh />
+        <div className="pt-5">
+          <TbPlayFootball />
+        </div>
       </button>
     </>
   );
