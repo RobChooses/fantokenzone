@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AssetType } from "./metadata";
 import RPC from "./viemRPC";
 import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -31,8 +32,10 @@ const web3auth = new Web3Auth({
 
 const Sidebar: React.FC = () => {
   const [provider, setProvider] = useState<IProvider | null>(null);
+  const [assetDictionary, setAssetDictionary] = useState<Record<string, AssetType>>({});
 
   const [isCollapsed, setIsCollapsed] = useState(true);
+  // const [isLoggedIn, setLoggedIn] = useState(false);
   const { isConnected } = useAccount();
 
   useEffect(() => {
@@ -41,9 +44,9 @@ const Sidebar: React.FC = () => {
         await web3auth.initModal();
         setProvider(web3auth.provider);
 
-        if (web3auth.connected) {
-          setLoggedIn(true);
-        }
+        // if (web3auth.connected) {
+        //   setLoggedIn(true);
+        // }
       } catch (error) {
         console.error(error);
       }
@@ -63,6 +66,7 @@ const Sidebar: React.FC = () => {
     // Get fan token balances
     if (isCollapsed) {
       const fanTokenBalances = await RPC.getFanTokenBalance(provider);
+      setAssetDictionary(fanTokenBalances);
 
       for (const fanToken in fanTokenBalances) {
         console.log(
@@ -79,6 +83,7 @@ const Sidebar: React.FC = () => {
       return;
     }
     const fanTokenBalances = await RPC.getFanTokenBalance(provider);
+    setAssetDictionary(fanTokenBalances);
 
     for (const fanToken in fanTokenBalances) {
       console.log("#### fanTokenBalance %s %s: ", fanTokenBalances[fanToken].name, fanTokenBalances[fanToken].balance);
@@ -119,29 +124,16 @@ const Sidebar: React.FC = () => {
               <h2 className="text-2xl font-bold mb-4">
                 My Fan Tokens <span>{!isCollapsed ? openView : unOpenView}</span>
               </h2>
-
-              <ul className="space-y-2">
-                <li className="p-2 hover:bg-gray-700 rounded">
-                  <a href="#" className="block">
-                    Home
-                  </a>
-                </li>
-                <li className="p-2 hover:bg-gray-700 rounded">
-                  <a href="#" className="block">
-                    About
-                  </a>
-                </li>
-                <li className="p-2 hover:bg-gray-700 rounded">
-                  <a href="#" className="block">
-                    Services
-                  </a>
-                </li>
-                <li className="p-2 hover:bg-gray-700 rounded">
-                  <a href="#" className="block">
-                    Contact
-                  </a>
-                </li>
-              </ul>
+              {Object.keys(assetDictionary).map(key => (
+                <div key={key}>
+                  <ul className="space-y-2 border-t-white border">
+                    <li className="text-1xl p-2 hover:bg-gray-700 rounded">{assetDictionary[key].name}</li>
+                    <li className="text-1xl p-2 rounded">
+                      {assetDictionary[key].balance} {assetDictionary[key].token}
+                    </li>
+                  </ul>
+                </div>
+              ))}
             </>
           )}
         </div>
