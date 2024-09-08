@@ -3,7 +3,7 @@
 ⚽Project Entry to ETHGlobal Online 2024
 
 # Description of Project
-FAN TOKEN ZONE is a social wallet to manage your CHiliz fan tokens. 
+FAN TOKEN ZONE is a social wallet to manage your Chiliz fan tokens annd make predictions of your team against your rivals.
 
 ## ETHGlobal partner technologies used
 
