@@ -17,7 +17,8 @@ export default class SignClient {
       const response = await this.signClient.createAttestation({
         schemaId: "0x209",
         data: {
-          signer: address,
+          prediction: string,
+          date: string,
         },
         indexingValue: address,
       });
