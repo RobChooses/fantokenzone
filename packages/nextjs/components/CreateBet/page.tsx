@@ -1,5 +1,21 @@
-// components/CreateBet.js
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { chainConfig } from "../fantokens/chilizconfig";
+import RPC from "../fantokens/viemRPC";
+import { IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3Auth } from "@web3auth/modal";
+
+const clientId = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || "";
+
+const privateKeyProvider = new EthereumPrivateKeyProvider({
+  config: { chainConfig },
+});
+
+const web3auth = new Web3Auth({
+  clientId,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
+  privateKeyProvider,
+});
 
 // import { ethers } from 'ethers';
 // import BettingContractABI from '~~/../../../hardhat/deployments/spicy/BettingContract.json'; // Replace with the path to your contract ABI
@@ -10,46 +26,75 @@ interface CreateBetProps {
 }
 
 const CreateBet: React.FC<CreateBetProps> = ({ isOpen, onClose }: CreateBetProps) => {
+  const [provider, setProvider] = useState<IProvider | null>(null);
+  const [statement, setStatement] = useState("");
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        await web3auth.initModal();
+
+        // // switch to galadriel - this works!
+        // privateKeyProvider.addChain(galadrielChainConfig);
+        // web3auth.switchChain({chainId: "0xaa289"});
+
+        setProvider(web3auth.provider);
+        // if (web3auth.connected) {
+        //   setLoggedIn(true);
+        // }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    init();
+  }, []);
+
   // const [teamAToken, setTeamAToken] = useState('');
   // const [teamBToken, setTeamBToken] = useState('');
   // const [betToken, setBetToken] = useState('');
   // const [amount, setAmount] = useState('');
-  const [statement, setStatement] = useState("");
   // const [platformFee, setPlatformFee] = useState('');
   // const [contractAddress, setContractAddress] = useState(''); // Replace with your contract address
 
   const createBet = async () => {
-    // if (!window.ethereum) {
-    //   alert('MetaMask is not installed!');
-    //   return;
-    // }
-    // try {
-    //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-    //   const signer = provider.getSigner();
-    //   const contract = new ethers.Contract(contractAddress, BettingContractABI, signer);
-    //   const tx = await contract.createBet(
-    //     teamAToken,
-    //     teamBToken,
-    //     betToken,
-    //     ethers.utils.parseUnits(amount, 18), // Assuming the amount is in Ether
-    //     statement,
-    //     { value: ethers.utils.parseUnits(platformFee, 18) } // Platform fee in Ether
-    //   );
-    //   await tx.wait();
-    //   alert('Bet created successfully!');
-    //   onClose(); // Close the modal after successful bet creation
-    // } catch (error) {
-    //   console.error(error);
-    //   alert('Error creating bet');
-    // }
+    if (!provider) {
+      return;
+    }
+
+    // const submitCreateBetTx = await RPC.submitCreateBet(provider);
+    const summariseBetFromGaladrielTx = await RPC.submitCreateBet(provider);
+    if (summariseBetFromGaladrielTx) {
+      onClose();
+    }
   };
+  // try {
+  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //   const signer = provider.getSigner();
+  //   const contract = new ethers.Contract(contractAddress, BettingContractABI, signer);
+  //   const tx = await contract.createBet(
+  //     teamAToken,
+  //     teamBToken,
+  //     betToken,
+  //     ethers.utils.parseUnits(amount, 18), // Assuming the amount is in Ether
+  //     statement,
+  //     { value: ethers.utils.parseUnits(platformFee, 18) } // Platform fee in Ether
+  //   );
+  //   await tx.wait();
+  //   alert('Bet created successfully!');
+  //   onClose(); // Close the modal after successful bet creation
+  // } catch (error) {
+  //   console.error(error);
+  //   alert('Error creating bet');
+  // }
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
       <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-lg w-full max-w-md shadow-lg">
-        <h2 className="text-2xl font-bold mb-4 text-white">Create a prediction against one of your RIVALZ!</h2>
+        <h2 className="text-2xl font-bold mb-4 text-white">Create a prediction against one of your rival teams!</h2>
+        <h2 className="text-1xl font-bold mb-4 text-white">This will cost 1 CHZ</h2>
         <form>
           {/* <div className="mb-4">
             <label className="block text-white text-sm font-bold mb-2">Team A Token Address:</label>
@@ -88,7 +133,7 @@ const CreateBet: React.FC<CreateBetProps> = ({ isOpen, onClose }: CreateBetProps
             />
           </div> */}
           <div className="mb-4">
-            <label className="block text-white text-sm font-bold mb-2">Statement:</label>
+            <label className="block text-white text-sm font-bold mb-2">Your betting prediction:</label>
             <input
               type="text"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

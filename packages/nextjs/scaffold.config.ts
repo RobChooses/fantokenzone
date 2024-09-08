@@ -11,7 +11,13 @@ export type ScaffoldConfig = {
 
 const scaffoldConfig = {
   // The networks on which your DApp is live
-  targetNetworks: [chains.spicy, chains.chiliz, chains.sepolia, chains.hardhat],
+  // TODO: manually add galadriel chain to viem definitions then update
+  //
+  // packages/nextjs/node_modules/viem/chains/definitions/galadriel.ts
+  // packages/nextjs/node_modules/viem/_types/chains/index.d.ts
+  // packages/nextjs/node_modules/viem/chains/index.ts
+  // targetNetworks: [chains.chiliz, chains.spicy, chains.sepolia, chains.galadriel, chains.hardhat],
+  targetNetworks: [chains.chiliz, chains.spicy, chains.sepolia, chains.hardhat],
 
   // The interval at which your front-end polls the RPC servers for new data
   // it has no effect if you only target the local network (default is 4000)

@@ -2,7 +2,9 @@ import { fanTokenMetadata } from "./metadata";
 import { AssetType } from "./metadata";
 import type { IProvider } from "@web3auth/base";
 import { createPublicClient, createWalletClient, custom, erc20Abi, formatUnits } from "viem";
-import { mainnet, polygonAmoy, sepolia, spicy } from "viem/chains";
+import { chiliz, mainnet, polygonAmoy, sepolia, spicy } from "viem/chains";
+// import { galadrielChainConfig } from "../fantokens/galadrielconfig";
+import { galadriel } from "viem/chains";
 
 const getViewChain = (provider: IProvider) => {
   switch (provider.chainId) {
@@ -14,6 +16,10 @@ const getViewChain = (provider: IProvider) => {
       return sepolia;
     case "0x15b32":
       return spicy;
+    case "0x15b38":
+      return chiliz;
+    case "0xaa289":
+      return galadriel;
     default:
       return mainnet;
   }
@@ -36,7 +42,9 @@ const getFanTokenBalance = async (provider: IProvider): Promise<Record<string, A
 
     const assetDictionary: Record<string, AssetType> = {};
 
-    const fanTokens = fanTokenMetadata.spicy;
+    const fanTokens = fanTokenMetadata.chiliz;
+    // const fanTokens = fanTokenMetadata.spicy;
+
     for (const fanToken of fanTokens) {
       const balance = await publicClient.readContract({
         address: fanToken.constractAddress,

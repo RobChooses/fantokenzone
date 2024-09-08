@@ -38,11 +38,11 @@ const TeamPage: React.FC<TeamPageProps> = ({ params }) => {
         <div className="container mx-auto text-center">
           <h2 className="text-4xl font-bold mb-4">{teamName} Fan Token Page</h2>
           <p className="text-gray-700 mb-8">
-            Stay updated with the latest news, scores, and make bets against your RIVALZ using your {slug} fan tokens.
+            Stay updated with the latest news, scores and NFTs using your {slug} fan tokens.
           </p>
           {/* <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"> */}
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={openModal}>
-            Place ANY custom bet on {teamName} beating your RIVALZ!
+            Get the latest news on {teamName} !
           </button>
           <CreateBet isOpen={isModalOpen} onClose={closeModal} />
         </div>

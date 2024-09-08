@@ -57,6 +57,26 @@ export const fanTokenMetadata = {
       decimal: 0n,
     },
   ],
+  chiliz: [
+    {
+      constractAddress: "0xF9C0F80a6c67b1B39bdDF00ecD57f2533ef5b688",
+      name: "AC Milan",
+      token: "ACM",
+      decimal: 0n,
+    },
+    {
+      constractAddress: "0x6401b29F40a02578Ae44241560625232A01B3F79",
+      name: "Manchester City",
+      token: "CITY",
+      decimal: 0n,
+    },
+    {
+      constractAddress: "0x454038003a93cf44766aF352F74bad6B745616D0",
+      name: "Juventus",
+      token: "JUV",
+      decimal: 0n,
+    },
+  ],
 };
 
 export const fanTokenMapping: { [key: string]: string } = {

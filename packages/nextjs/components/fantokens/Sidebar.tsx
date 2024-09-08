@@ -1,25 +1,15 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { chainConfig } from "./chilizconfig";
 import { AssetType } from "./metadata";
 import RPC from "./viemRPC";
-import { CHAIN_NAMESPACES, IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
+import { IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
 import { TbPlayFootball } from "react-icons/tb";
 import { useAccount } from "wagmi";
 
 const clientId = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || "";
-
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0x15b32",
-  rpcTarget: "https://spicy-rpc.chiliz.com",
-  displayName: "Chiliz Spicy Testnet",
-  blockExplorerUrl: "http://spicy-explorer.chiliz.com",
-  ticker: "CHZ",
-  tickerName: "CHZ",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-};
 
 const privateKeyProvider = new EthereumPrivateKeyProvider({
   config: { chainConfig },

@@ -10,6 +10,8 @@ const clientId = scaffoldConfig.web3authClientId;
 
 const chain = scaffoldConfig.targetNetworks[0];
 
+console.log("#### Chain ID in hex: 0x" + chain.id.toString(16));
+
 const chainConfig = {
   chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x" + chain.id.toString(16),
