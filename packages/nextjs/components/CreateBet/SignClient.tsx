@@ -12,15 +12,15 @@ export default class SignClient {
     });
   }
 
-  async attest(address: string): Promise<AttestationResult> {
+  async attest(prediction: string, date: string): Promise<AttestationResult> {
     try {
       const response = await this.signClient.createAttestation({
         schemaId: "0x209",
         data: {
-          prediction: string,
-          date: string,
+          prediction,
+          date,
         },
-        indexingValue: address,
+        indexingValue: prediction,
       });
 
       return response;

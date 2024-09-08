@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { chainConfig } from "../fantokens/chilizconfig";
-import RPC from "../fantokens/viemRPC";
 import SignClient from "./SignClient";
 import EthereumRPC from "./ethereumRPC";
 import { IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
@@ -29,7 +28,8 @@ interface CreateBetProps {
 
 const CreateBet: React.FC<CreateBetProps> = ({ isOpen, onClose }: CreateBetProps) => {
   const [provider, setProvider] = useState<IProvider | null>(null);
-  const [statement, setStatement] = useState("");
+  const [statementInput, setStatementInput] = useState("");
+  const [dateInput, setDateInput] = useState("");
 
   useEffect(() => {
     const init = async () => {
@@ -63,9 +63,8 @@ const CreateBet: React.FC<CreateBetProps> = ({ isOpen, onClose }: CreateBetProps
     const signClient = new SignClient(ethereumRPC.walletClient);
     console.log("Creating Attestation...");
 
-    const address = await ethereumRPC.getAccount();
-    await signClient.attest(address);
-    await RPC.submitCreateAttestation(provider);
+    await ethereumRPC.getAccount();
+    await signClient.attest(statementInput, dateInput);
 
     onClose();
   };
@@ -138,8 +137,17 @@ const CreateBet: React.FC<CreateBetProps> = ({ isOpen, onClose }: CreateBetProps
             <input
               type="text"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              value={statement}
-              onChange={e => setStatement(e.target.value)}
+              value={statementInput}
+              onChange={e => setStatementInput(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-white text-sm font-bold mb-2">On what date and time:</label>
+            <input
+              type="text"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={dateInput}
+              onChange={e => setDateInput(e.target.value)}
             />
           </div>
           {/* <div className="mb-4">
