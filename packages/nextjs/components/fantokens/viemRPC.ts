@@ -1,3 +1,5 @@
+"use client";
+
 import { fanTokenMetadata } from "./metadata";
 import { AssetType } from "./metadata";
 import type { IProvider } from "@web3auth/base";

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { chainConfig } from "../fantokens/chilizconfig";
 import RPC from "../fantokens/viemRPC";
+import SignClient from "./SignClient";
+import EthereumRPC from "./ethereumRPC";
 import { IProvider, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth } from "@web3auth/modal";
@@ -33,11 +35,6 @@ const CreateBet: React.FC<CreateBetProps> = ({ isOpen, onClose }: CreateBetProps
     const init = async () => {
       try {
         await web3auth.initModal();
-
-        // // switch to galadriel - this works!
-        // privateKeyProvider.addChain(galadrielChainConfig);
-        // web3auth.switchChain({chainId: "0xaa289"});
-
         setProvider(web3auth.provider);
         // if (web3auth.connected) {
         //   setLoggedIn(true);
@@ -62,11 +59,15 @@ const CreateBet: React.FC<CreateBetProps> = ({ isOpen, onClose }: CreateBetProps
       return;
     }
 
-    // const submitCreateBetTx = await RPC.submitCreateBet(provider);
-    const summariseBetFromGaladrielTx = await RPC.submitCreateBet(provider);
-    if (summariseBetFromGaladrielTx) {
-      onClose();
-    }
+    const ethereumRPC = new EthereumRPC(provider!);
+    const signClient = new SignClient(ethereumRPC.walletClient);
+    console.log("Creating Attestation...");
+
+    const address = await ethereumRPC.getAccount();
+    await signClient.attest(address);
+    await RPC.submitCreateAttestation(provider);
+
+    onClose();
   };
   // try {
   //   const provider = new ethers.providers.Web3Provider(window.ethereum);
